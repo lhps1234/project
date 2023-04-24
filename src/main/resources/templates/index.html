@@ -137,8 +137,8 @@
 		                (function(marker){
 		                    return function (){
 		                        infowindow.setContent("<h3>"+main_title+"</h3>"+"<p>"+itemcntnts+"<p>"+position+"<p>"
-		                        + "<button type='button' class='btn btn-outline-primary' onclick='calcRoute()'>출발</button> "
-		                        +"<button type='button' class='btn btn-outline-primary' onclick='arrive()'>도착</button> "+"<p>"
+		                        //+ "<button type='button' class='btn btn-outline-primary' onclick='calcRoute()'>출발</button> "
+		                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute()'>도착</button> "+"<p>"
 		                        );
 		                        infowindow.open(map,marker);
 		                    };
@@ -147,16 +147,47 @@
 	    			return item
 	    		}return false;
 	    	})
-	       
     	}
-       
-       
+            // 내 위치 파악하기
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+               	  const myLat = position.coords.latitude;
+                  const myLng = position.coords.longitude;	 
+                	
+                  const pos = new google.maps.LatLng(myLat,myLng);
+                 
+                  console.log(myLat);
+                  console.log(myLng);
+                  infowindow.setPosition(pos);
+                  infowindow.setContent("내위치"+"<p>"+pos);
+                  infowindow.open(map);
+                  map.setCenter(pos);
+                },
+                () => {
+                  handleLocationError(true, infowindow, map.getCenter());
+                }
+              );
+	            } else {
+	              // Browser doesn't support Geolocation
+	              handleLocationError(false, infowindow, map.getCenter());
+	            }
+
+	          function handleLocationError(browserHasGeolocation, infowindow, pos) {
+	            infowindow.setPosition(pos);
+	            infowindow.setContent(
+	              browserHasGeolocation
+	                ? "Error: The Geolocation service failed."
+	                : "Error: Your browser doesn't support geolocation."
+	            );
+	            infowindow.open(map);
+	          }
     }
     
     function calcRoute() {
     	
     	marker.setAnimation(google.maps.Animation.BOUNCE);
-        var start = latt;
+        var start = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
         var end = lngg;
         var mode = document.getElementById('mode').value;
    		
