@@ -9,7 +9,7 @@
     	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     
     <script th:inline="javascript">
-     //branch tests
+    //spring
      function on(){
         $.ajax({
 
@@ -84,7 +84,7 @@
 	             
 	            //지역 정하기 
 	             const data1 = data.filter((item)=>{
-	            	 return item
+	            	 return item.gugun_nm=='중구' 
 	            	 })
 	          	getDb(data1)
 	           },
